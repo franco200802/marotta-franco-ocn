@@ -1,0 +1,87 @@
+/*
+ * Sistema visual de OCN Villa Urquiza.
+ * Paleta y tipografías tomadas del documento "OCN Diseño Web" (Etapa 2 · UX/UI):
+ *   Principal  — Charcoal Urbano #1C1B19 (header y footer)
+ *   Secundario — Stone Cálido   #F3EFE7 (secciones de contenido)
+ *   Acento     — Naranja Señal  #FF5A1F (botones clave)
+ *   Títulos: Bebas Neue · Textos: Inter
+ */
+:root {
+  /* Colores de marca */
+  --color-charcoal: #1c1b19;
+  --color-charcoal-soft: #2b2926;
+  --color-stone: #f3efe7;
+  --color-stone-dark: #e4ded3;
+  --color-accent: #ff5a1f;
+  --color-accent-hover: #ff7440;
+  --color-white: #ffffff;
+
+  /* Texto */
+  --color-text: #1c1b19;
+  --color-text-muted: #5c574f;
+  --color-text-on-dark: #f3efe7;
+  --color-text-on-dark-muted: #b9b2a6;
+  /* Naranja oscurecido para textos pequeños sobre fondos claros (contraste AA) */
+  --color-accent-text: #b8400f;
+
+  /* Estados */
+  --color-success: #1f7a45;
+  --color-success-bg: #e3f3e9;
+  --color-danger: #b42318;
+  --color-danger-hover: #93190f;
+  --color-danger-bg: #fdecea;
+  --color-info-bg: #ece7dd;
+
+  /* Superficies y bordes */
+  --color-surface: var(--color-white);
+  --color-border: #d9d2c5;
+  --color-border-strong: #a59d90;
+  --placeholder-stripe-a: #e4dfd6;
+  --placeholder-stripe-b: #ece8e0;
+
+  /* Foco: oscuro sobre fondos claros, naranja sobre fondos oscuros */
+  --focus-ring-color: var(--color-charcoal);
+
+  /* Tipografía */
+  --font-display: "Bebas Neue", "Oswald", "Arial Narrow", Impact, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.75rem, 1.4rem + 1.5vw, 2.25rem);
+  --text-3xl: clamp(2.5rem, 1.8rem + 3vw, 4rem);
+
+  /* Espaciado */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --section-padding: clamp(2.5rem, 2rem + 3vw, 4.5rem);
+
+  /* Bordes y radios */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+  --border-width: 1.5px;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgb(28 27 25 / 0.06);
+  --shadow-md: 0 6px 18px rgb(28 27 25 / 0.1);
+  --shadow-lg: 0 18px 48px rgb(28 27 25 / 0.25);
+
+  /* Layout */
+  --container-width: 1200px;
+  --container-padding: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --header-height: 64px;
+
+  --transition-fast: 150ms ease;
+}

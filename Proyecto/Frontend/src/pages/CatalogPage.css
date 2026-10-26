@@ -1,0 +1,27 @@
+.catalog__count {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.catalog__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.catalog__grid > li {
+  display: flex;
+}
+
+.catalog__grid .product-card {
+  width: 100%;
+}
+
+@media (max-width: 400px) {
+  .catalog__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
