@@ -68,6 +68,7 @@ classDiagram
         +cantidad
         +precioUnitario
         +subtotal
+        +nombreProducto
         +calcularSubtotal()
     }
 
@@ -77,6 +78,7 @@ classDiagram
         +tipo
         +zona
         +costo
+        +direccion
         +calcularCosto()
     }
 
@@ -134,7 +136,9 @@ Pendiente → Cancelado (estado alternativo, solo desde Pendiente: se restablece
 
 - `Producto` representa una variante concreta (un talle y un color) con su propio stock, tal como lo define el documento de requerimientos. La web agrupa por nombre las variantes de una misma prenda para elegir talle y color.
 - `Producto.activo` permite **desactivar** un producto (pedido del documento: "eliminar o desactivar") sin perder los pedidos que lo incluyen.
-- `Envio.tipo` es `retiro_local` o `domicilio`; con retiro no hay zona ni costo.
+- `Envio.tipo` es `retiro_local` o `domicilio`; con retiro no hay zona, costo ni dirección.
+- `DetallePedido.nombreProducto` guarda el nombre al momento de la compra, para que el historial no cambie si el producto se edita o se elimina.
+- RN-04 se aplica cuando el subtotal **alcanza o supera** el monto mínimo (así el aviso "te faltan $X" llega a cero justo en el mínimo).
 - `Pedido.metodoPago` es solo una etiqueta (efectivo, transferencia o Mercado Pago): el pago se hace al retirar o recibir, no hay pasarela.
 - `Local`, `ZonaEnvio` y `Configuracion` se agregaron en esta etapa para cubrir los datos del local, el costo por zona y la regla RN-04.
 

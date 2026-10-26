@@ -1,10 +1,13 @@
 import productoService from "../services/ProductoService.js";
 import { ApiResponse } from "../responses/ApiResponse.js";
+import { Roles } from "../enums/Roles.js";
+
+const esAdmin = (req) => req.usuario?.rol === Roles.ADMIN;
 
 class ProductoController {
   obtenerTodos(req, res, next) {
     try {
-      const productos = productoService.obtenerTodos();
+      const productos = productoService.obtenerTodos({ incluirInactivos: esAdmin(req) && req.query.todos === "1" });
       return ApiResponse.success(res, productos);
     } catch (error) {
       next(error);
@@ -13,7 +16,7 @@ class ProductoController {
 
   obtenerPorCodigo(req, res, next) {
     try {
-      const producto = productoService.obtenerPorCodigo(req.params.codigo);
+      const producto = productoService.obtenerPorCodigo(req.params.codigo, { incluirInactivos: esAdmin(req) });
       return ApiResponse.success(res, producto);
     } catch (error) {
       next(error);
@@ -42,6 +45,14 @@ class ProductoController {
     try {
       productoService.eliminar(req.params.codigo);
       return ApiResponse.success(res, null);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  obtenerCategorias(req, res, next) {
+    try {
+      return ApiResponse.success(res, productoService.obtenerCategorias());
     } catch (error) {
       next(error);
     }

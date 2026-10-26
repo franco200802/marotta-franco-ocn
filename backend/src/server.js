@@ -1,7 +1,8 @@
-import app from "./app.js";
+import { createApp } from "./app.js";
+import { config } from "./utils/config.js";
 
-const PORT = process.env.PORT || 3000;
+const app = createApp();
 
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${PORT}`);
+app.listen(config.port, () => {
+  console.log(`Servidor escuchando en el puerto ${config.port}`);
 });
