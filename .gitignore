@@ -4,3 +4,9 @@ dist/
 build/
 *.log
 .DS_Store
+
+# Herramientas de trabajo (skills de Claude Code)
+.claude/
+.agents/
+skills-lock.json
+.impeccable/questions/

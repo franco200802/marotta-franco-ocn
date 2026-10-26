@@ -15,14 +15,14 @@ Se necesitan dos terminales.
 
 ```bash
 # Terminal 1 — Backend (puerto 3000)
-cd Proyecto/Backend
+cd backend
 npm install
 npm start
 ```
 
 ```bash
 # Terminal 2 — Frontend (puerto 5173)
-cd Proyecto/Frontend
+cd frontend
 npm install
 npm run dev
 ```

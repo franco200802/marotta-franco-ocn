@@ -1,5 +1,5 @@
 class Producto {
-  constructor(codigo, nombre, categoria, talle, color, descripcion, precio, stock, imagen) {
+  constructor(codigo, nombre, categoria, talle, color, descripcion, precio, stock, imagen, activo = true) {
     this.codigo = codigo;
     this.nombre = nombre;
     this.categoria = categoria;
@@ -9,6 +9,7 @@ class Producto {
     this.precio = precio;
     this.stock = stock;
     this.imagen = imagen;
+    this.activo = activo; // false = producto desactivado (no se muestra ni se vende)
   }
 }
 
