@@ -16,7 +16,10 @@ export default function FormField({ id, label, hint, error, required = false, cl
       <label htmlFor={id} className="form-field__label">
         {label}
         {required ? (
-          <span className="form-field__required" aria-hidden="true"> *</span>
+          <span className="form-field__required" aria-hidden="true">
+            {" "}
+            *
+          </span>
         ) : (
           <span className="form-field__optional"> (opcional)</span>
         )}

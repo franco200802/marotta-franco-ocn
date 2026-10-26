@@ -1,0 +1,108 @@
+.selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.selector--compacto {
+  gap: var(--space-3);
+}
+
+.selector__grupo {
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-width: 0;
+}
+
+.selector__leyenda {
+  margin-bottom: var(--space-2);
+  padding: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.selector__leyenda strong {
+  color: var(--color-text);
+}
+
+.selector__opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.muestra,
+.talle {
+  position: relative;
+  cursor: pointer;
+}
+
+.muestra input,
+.talle input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: inherit;
+}
+
+.muestra__chip {
+  display: block;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--color-white);
+  box-shadow: 0 0 0 1.5px var(--color-border-strong);
+  transition:
+    box-shadow var(--transition-fast),
+    transform 200ms var(--ease-pop);
+}
+
+.muestra input:checked + .muestra__chip {
+  box-shadow: 0 0 0 3px var(--color-charcoal);
+  transform: scale(1.08);
+}
+
+.muestra input:focus-visible + .muestra__chip,
+.talle input:focus-visible + .talle__chip {
+  outline: 3px solid var(--focus-ring-color);
+  outline-offset: 3px;
+}
+
+.talle__chip {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.talle:hover .talle__chip {
+  border-color: var(--color-charcoal);
+}
+
+.talle input:checked + .talle__chip {
+  background: var(--color-charcoal);
+  border-color: var(--color-charcoal);
+  color: var(--color-stone);
+}
+
+.talle--agotado {
+  cursor: not-allowed;
+}
+
+.talle--agotado .talle__chip {
+  color: var(--color-text-muted);
+  background: transparent;
+  border-style: dashed;
+  text-decoration: line-through;
+}

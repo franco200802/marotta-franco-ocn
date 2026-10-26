@@ -16,10 +16,13 @@ export default function ToastProvider({ children }) {
   }, []);
 
   const showToast = useCallback(
-    ({ type = "info", title, message }) => {
+    ({ type = "info", title, message, action }) => {
       const id = nextId.current++;
-      setToasts((current) => [...current, { id, type, title, message }]);
-      timers.current.set(id, setTimeout(() => dismissToast(id), DURACION_MS[type] ?? 5000));
+      setToasts((current) => [...current, { id, type, title, message, action }]);
+      timers.current.set(
+        id,
+        setTimeout(() => dismissToast(id), DURACION_MS[type] ?? 5000),
+      );
       return id;
     },
     [dismissToast],
@@ -34,8 +37,9 @@ export default function ToastProvider({ children }) {
     () => ({
       showToast,
       dismissToast,
-      success: (message, title) => showToast({ type: "success", message, title }),
+      success: (message, title, action) => showToast({ type: "success", message, title, action }),
       error: (message, title) => showToast({ type: "error", message, title }),
+      info: (message, title) => showToast({ type: "info", message, title }),
     }),
     [showToast, dismissToast],
   );

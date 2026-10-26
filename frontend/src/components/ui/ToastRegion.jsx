@@ -8,7 +8,7 @@ const TITULOS = { success: "Listo", error: "Error", info: "Aviso" };
 export default function ToastRegion({ toasts, onDismiss }) {
   return (
     <div className="toast-region" aria-live="polite" aria-relevant="additions">
-      {toasts.map(({ id, type, title, message }) => {
+      {toasts.map(({ id, type, title, message, action }) => {
         const Icon = ICONOS[type] ?? CheckIcon;
         return (
           <div key={id} className={`toast toast--${type}`} role={type === "error" ? "alert" : "status"}>
@@ -16,6 +16,18 @@ export default function ToastRegion({ toasts, onDismiss }) {
             <div className="toast__text">
               <p className="toast__title">{title ?? TITULOS[type]}</p>
               <p className="toast__message">{message}</p>
+              {action && (
+                <button
+                  type="button"
+                  className="toast__action"
+                  onClick={() => {
+                    action.onClick();
+                    onDismiss(id);
+                  }}
+                >
+                  {action.label}
+                </button>
+              )}
             </div>
             <button type="button" className="toast__close" onClick={() => onDismiss(id)}>
               <CloseIcon size={18} />

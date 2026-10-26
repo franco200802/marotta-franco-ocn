@@ -1,0 +1,65 @@
+.linea {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-stone-dark);
+}
+
+.linea__arte {
+  width: 72px;
+  height: 72px;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--color-stone);
+}
+
+.linea__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.linea__nombre {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.linea__nombre:hover {
+  text-decoration: underline;
+}
+
+.linea__variante {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.linea__controles {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.linea__quitar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-danger);
+  cursor: pointer;
+}
+
+.linea__quitar:hover {
+  background: var(--color-danger-bg);
+}
+
+.linea__subtotal {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}

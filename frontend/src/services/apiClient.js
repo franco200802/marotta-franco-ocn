@@ -1,8 +1,9 @@
 /*
  * Cliente HTTP compartido por todos los servicios.
  * El backend responde con el formato { success, data } o { success: false, message }
- * (ver Backend/src/responses/ApiResponse.js).
+ * (ver backend/src/responses/ApiResponse.js).
  */
+import { borrarLocal, guardarLocal, leerLocal } from "../utils/storage.js";
 
 // URL base del servidor sin "/api". Vacía = misma URL del frontend (proxy de Vite).
 const API_BASE_URL = (import.meta.env.VITE_API_URL ?? "").replace(/\/+$/, "");
@@ -16,6 +17,19 @@ const STATUS_MESSAGES = {
   409: "El recurso ya existe.",
 };
 
+const CLAVE_TOKEN = "ocn.token";
+let alExpirarSesion = () => {};
+
+/** Token de la sesión (JWT). El AuthProvider registra qué hacer si el servidor lo rechaza. */
+export const sesion = {
+  obtenerToken: () => leerLocal(CLAVE_TOKEN),
+  guardarToken: (token) => guardarLocal(CLAVE_TOKEN, token),
+  borrarToken: () => borrarLocal(CLAVE_TOKEN),
+  alExpirar: (callback) => {
+    alExpirarSesion = callback;
+  },
+};
+
 export class ApiError extends Error {
   constructor(message, status = 0) {
     super(message);
@@ -25,6 +39,10 @@ export class ApiError extends Error {
 
   get isNotFound() {
     return this.status === 404;
+  }
+
+  get isConflict() {
+    return this.status === 409;
   }
 }
 
@@ -66,6 +84,10 @@ function buildErrorMessage(status, body) {
 export async function apiRequest(path, { method = "GET", body, signal } = {}) {
   const headers = { Accept: "application/json" };
   const options = { method, headers, signal };
+  const token = sesion.obtenerToken();
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
 
   if (body !== undefined) {
     headers["Content-Type"] = "application/json";
@@ -83,6 +105,9 @@ export async function apiRequest(path, { method = "GET", body, signal } = {}) {
   const payload = await readBody(response);
 
   if (!response.ok || payload?.success === false) {
+    if (response.status === 401 && token) {
+      alExpirarSesion();
+    }
     throw new ApiError(buildErrorMessage(response.status, payload), response.status);
   }
 
@@ -96,3 +121,11 @@ export async function apiRequest(path, { method = "GET", body, signal } = {}) {
 
   return payload;
 }
+
+export const http = {
+  get: (path, opciones) => apiRequest(path, opciones),
+  post: (path, body, opciones) => apiRequest(path, { ...opciones, method: "POST", body }),
+  put: (path, body, opciones) => apiRequest(path, { ...opciones, method: "PUT", body }),
+  patch: (path, body, opciones) => apiRequest(path, { ...opciones, method: "PATCH", body }),
+  delete: (path, opciones) => apiRequest(path, { ...opciones, method: "DELETE" }),
+};

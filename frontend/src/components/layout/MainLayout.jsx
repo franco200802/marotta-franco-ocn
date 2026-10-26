@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import SiteHeader from "./SiteHeader.jsx";
 import SiteFooter from "./SiteFooter.jsx";
+import CartDrawer from "../carrito/CartDrawer.jsx";
 
 /** Desplaza a la sección indicada en el hash (#sobre-nosotros) o al inicio al cambiar de pantalla. */
 function useScrollOnNavigation() {
@@ -32,6 +33,7 @@ export default function MainLayout() {
         <Outlet />
       </main>
       <SiteFooter />
+      <CartDrawer />
     </>
   );
 }

@@ -1,12 +1,14 @@
 import Button from "../ui/Button.jsx";
 import { EditIcon, TrashIcon } from "../ui/Icons.jsx";
 import ProductImage from "./ProductImage.jsx";
-import StockBadge from "./StockBadge.jsx";
+import ProductoArte from "./ProductoArte.jsx";
+import StockRapido from "./StockRapido.jsx";
+import Badge from "../ui/Badge.jsx";
 import { formatPrecio, textoOGuion } from "../../utils/format.js";
 import "./ProductTable.css";
 
 /** Tabla de administración. En pantallas chicas cada fila se muestra como una tarjeta. */
-export default function ProductTable({ productos, onDelete, caption }) {
+export default function ProductTable({ productos, onDelete, onStock, caption }) {
   return (
     <div className="product-table__wrapper">
       <table className="product-table">
@@ -18,8 +20,11 @@ export default function ProductTable({ productos, onDelete, caption }) {
             <th scope="col">Categoría</th>
             <th scope="col">Talle</th>
             <th scope="col">Color</th>
-            <th scope="col" className="product-table__numeric">Precio</th>
+            <th scope="col" className="product-table__numeric">
+              Precio
+            </th>
             <th scope="col">Stock</th>
+            <th scope="col">Estado</th>
             <th scope="col">
               <span className="visually-hidden">Acciones</span>
             </th>
@@ -33,7 +38,13 @@ export default function ProductTable({ productos, onDelete, caption }) {
               </td>
               <th scope="row" className="product-table__product-cell">
                 <div className="product-table__product">
-                  <ProductImage src={producto.imagen} alt="" className="product-table__thumb" placeholderLabel="" />
+                  {producto.imagen ? (
+                    <ProductImage src={producto.imagen} alt="" className="product-table__thumb" placeholderLabel="" />
+                  ) : (
+                    <span className="product-table__thumb product-table__thumb--arte">
+                      <ProductoArte nombre={producto.nombre} categoria={producto.categoria} color={producto.color} />
+                    </span>
+                  )}
                   <span>{producto.nombre}</span>
                 </div>
               </th>
@@ -44,7 +55,16 @@ export default function ProductTable({ productos, onDelete, caption }) {
                 {formatPrecio(producto.precio)}
               </td>
               <td data-label="Stock">
-                <StockBadge stock={producto.stock} />
+                <StockRapido key={producto.stock} producto={producto} onGuardar={onStock} />
+              </td>
+              <td data-label="Estado">
+                {producto.activo === false ? (
+                  <Badge tone="neutral">Desactivado</Badge>
+                ) : producto.stock > 0 ? (
+                  <Badge tone="success">A la venta</Badge>
+                ) : (
+                  <Badge tone="danger">Sin stock</Badge>
+                )}
               </td>
               <td className="product-table__actions">
                 <Button

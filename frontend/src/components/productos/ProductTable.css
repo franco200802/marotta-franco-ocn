@@ -63,6 +63,12 @@
   object-fit: cover;
 }
 
+.product-table__thumb--arte {
+  display: block;
+  padding: 4px;
+  background: var(--color-stone);
+}
+
 .product-table__actions {
   white-space: nowrap;
   text-align: right !important;

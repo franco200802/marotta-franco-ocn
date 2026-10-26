@@ -2,8 +2,8 @@ import { SearchIcon } from "../ui/Icons.jsx";
 import "./ProductFilters.css";
 
 /**
- * Búsqueda por texto y filtro por categoría.
- * El filtrado se realiza en el navegador sobre los productos ya obtenidos de la API.
+ * Búsqueda y filtros. El filtrado se hace en el navegador sobre los productos ya obtenidos
+ * de la API (la API no ofrece filtros).
  */
 export default function ProductFilters({
   idPrefix,
@@ -11,9 +11,7 @@ export default function ProductFilters({
   onQueryChange,
   searchLabel = "Buscar",
   searchPlaceholder,
-  categorias,
-  categoria,
-  onCategoriaChange,
+  filtros = [],
 }) {
   return (
     <form className="product-filters" role="search" onSubmit={(event) => event.preventDefault()}>
@@ -32,24 +30,24 @@ export default function ProductFilters({
         </div>
       </div>
 
-      {categorias && (
-        <div className="product-filters__field">
-          <label htmlFor={`${idPrefix}-categoria`}>Categoría</label>
+      {filtros.map(({ id, label, value, onChange, opciones, todas }) => (
+        <div key={id} className="product-filters__field">
+          <label htmlFor={`${idPrefix}-${id}`}>{label}</label>
           <select
-            id={`${idPrefix}-categoria`}
+            id={`${idPrefix}-${id}`}
             className="form-control"
-            value={categoria}
-            onChange={(event) => onCategoriaChange(event.target.value)}
+            value={value}
+            onChange={(event) => onChange(event.target.value)}
           >
-            <option value="">Todas las categorías</option>
-            {categorias.map((nombre) => (
-              <option key={nombre} value={nombre}>
-                {nombre}
+            {todas && <option value="">{todas}</option>}
+            {opciones.map((opcion) => (
+              <option key={opcion.value} value={opcion.value}>
+                {opcion.label}
               </option>
             ))}
           </select>
         </div>
-      )}
+      ))}
     </form>
   );
 }

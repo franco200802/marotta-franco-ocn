@@ -43,8 +43,8 @@
   --focus-ring-color: var(--color-charcoal);
 
   /* Tipografía */
-  --font-display: "Bebas Neue", "Oswald", "Arial Narrow", Impact, sans-serif;
-  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+  --font-body: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 
   --text-xs: 0.8125rem;
@@ -84,4 +84,21 @@
   --header-height: 64px;
 
   --transition-fast: 150ms ease;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Único easing con rebote: solo para parches y etiquetas, a propósito. */
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Parches y etiquetas */
+  --puntada: rgb(28 27 25 / 0.35);
+  --puntada-clara: rgb(243 239 231 / 0.35);
+  --puntada-offset: -10px;
+  --radio-parche: 28px;
+  --festoneado: 24px;
+
+  /* Capas: el canvas 3D queda entre el fondo de las secciones y su contenido */
+  --z-objeto: 1;
+  --z-contenido: 2;
+  --z-header: 40;
+  --z-cajon: 60;
+  --z-toast: 70;
 }

@@ -1,0 +1,20 @@
+.cuenta-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.cuenta-form .btn {
+  align-self: stretch;
+  margin-top: var(--space-2);
+}
+
+.cuenta-form__alerta {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-danger);
+  border-radius: var(--radius-md);
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}

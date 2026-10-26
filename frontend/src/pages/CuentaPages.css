@@ -1,0 +1,38 @@
+.cuenta {
+  display: grid;
+  place-items: center;
+}
+
+.cuenta__caja {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(100%, 480px);
+  padding: clamp(1.5rem, 1rem + 3vw, 3rem);
+}
+
+.cuenta__caja--ancha {
+  width: min(100%, 640px);
+}
+
+.cuenta__caja h1 {
+  font-size: clamp(3rem, 2.4rem + 3vw, 4.5rem);
+}
+
+.cuenta__caja h2 {
+  font-size: 2.25rem;
+}
+
+.cuenta__bajada,
+.cuenta__alternativa {
+  color: var(--color-text-muted);
+}
+
+.cuenta__alternativa {
+  text-align: center;
+}
+
+.cuenta__alternativa a {
+  font-weight: 700;
+  color: var(--color-text);
+}

@@ -33,6 +33,17 @@ export function useApiResource(fetcher) {
 
   const reload = useCallback(() => setVersion((v) => v + 1), []);
 
+  // Vuelve a pedir los datos sin mostrar el estado de carga (seguimiento de pedidos, por ejemplo).
+  const refrescar = useCallback(async () => {
+    try {
+      const data = await fetcher();
+      setState({ status: "success", data, error: null });
+      return data;
+    } catch {
+      return null;
+    }
+  }, [fetcher]);
+
   const setData = useCallback((updater) => {
     setState((prev) => ({
       ...prev,
@@ -45,6 +56,7 @@ export function useApiResource(fetcher) {
     error: state.error,
     isLoading: state.status === "loading",
     reload,
+    refrescar,
     setData,
   };
 }

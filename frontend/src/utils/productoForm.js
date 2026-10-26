@@ -13,6 +13,7 @@ export const PRODUCTO_VACIO = {
   precio: "",
   stock: "",
   imagen: "",
+  activo: true,
 };
 
 export const LIMITES = {
@@ -82,12 +83,14 @@ export function toProductoPayload(values) {
     precio: Number(values.precio),
     stock: Number(values.stock),
     imagen: values.imagen.trim(),
+    activo: values.activo !== false,
   };
 }
 
 /** Convierte un producto recibido de la API en valores editables. */
 export function productoToFormValues(producto) {
-  return Object.fromEntries(
+  const valores = Object.fromEntries(
     Object.keys(PRODUCTO_VACIO).map((campo) => [campo, producto?.[campo] == null ? "" : String(producto[campo])]),
   );
+  return { ...valores, activo: producto?.activo !== false };
 }

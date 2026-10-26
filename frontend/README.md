@@ -1,93 +1,91 @@
-# Frontend — OCN Villa Urquiza
+# Frontend — OCN Villa Urquiza (Entrega 3)
 
-Interfaz web del **Sistema de Gestión de Ventas para OCN Villa Urquiza**, desarrollada con React + Vite y conectada a la API del Backend (Entrega 2).
-
-## Tecnologías
-
-- React 19 y React Router (navegación entre pantallas)
-- Vite (servidor de desarrollo, build y proxy hacia la API)
-- CSS con variables (sin librerías de componentes)
-- ESLint (reglas recomendadas y de hooks)
+Interfaz web del **Sistema de Gestión de Ventas para OCN Villa Urquiza**, en React + Vite, conectada a la API de la Entrega 2 (`../backend`).
 
 ## Cómo ejecutar
 
-Se necesitan dos terminales.
-
 ```bash
-# Terminal 1 — Backend (puerto 3000)
-cd backend
-npm install
-npm start
-```
+# Terminal 1 — API (puerto 3000)
+cd backend && npm install && npm start
 
-```bash
 # Terminal 2 — Frontend (puerto 5173)
-cd frontend
-npm install
-npm run dev
+cd frontend && npm install && npm run dev
 ```
 
-Abrir http://localhost:5173
+Abrir http://localhost:5173. Administrador de desarrollo: `admin@ocn.local` / `ocn-admin-dev` (ver `backend/.env.example`).
 
-Otros scripts: `npm run build` (build de producción en `dist/`), `npm run preview` (sirve el build en el puerto 4173, también con proxy) y `npm run lint`.
+Otros scripts:
+
+- `npm run build`: build de producción en `dist/`.
+- `npm run preview`: sirve el build en el puerto 4173, también con proxy.
+- `npm run lint`: ESLint.
 
 ## Configuración
 
-Copiar `.env.example` a `.env` si se necesita cambiar algo:
-
-| Variable | Uso | Valor por defecto |
+| Variable | Uso | Por defecto |
 | --- | --- | --- |
-| `VITE_API_URL` | URL del servidor sin `/api`. Vacía = se usa el proxy de Vite. | vacía |
+| `VITE_API_URL` | URL del servidor sin `/api`. Vacía = misma URL, con el proxy de Vite. | vacía |
 | `API_PROXY_TARGET` | Destino del proxy de `/api` en `dev` y `preview`. | `http://localhost:3000` |
 
-El backend no tiene CORS habilitado, por eso el frontend llama a `/api/...` en su propio origen y Vite reenvía esas peticiones al backend. Si en el futuro se habilita CORS, se puede definir `VITE_API_URL=http://localhost:3000`.
+La API tiene CORS habilitado para `localhost:5173` y `4173`, así que también se puede usar `VITE_API_URL=http://localhost:3000`.
 
 ## Pantallas
 
-| Ruta | Pantalla | API |
+| Ruta | Pantalla | Acceso |
 | --- | --- | --- |
-| `/` | Landing (hero, sobre nosotros, productos estrella, contacto) | — |
-| `/productos` | Catálogo con búsqueda y filtro por categoría | `GET /api/productos` |
-| `/productos/:codigo` | Ficha del producto | `GET /api/productos/:codigo` |
-| `/admin/productos` | Gestión de productos (listado y eliminación) | `GET`, `DELETE /api/productos/:codigo` |
-| `/admin/productos/nuevo` | Alta de producto | `POST /api/productos` |
-| `/admin/productos/:codigo/editar` | Edición de producto | `GET`, `PUT /api/productos/:codigo` |
-| cualquier otra | Página no encontrada | — |
+| `/` | Inicio: hero con un producto real, sobre nosotros, productos estrella, cómo comprar, dónde estamos | Público |
+| `/productos` | Catálogo de prendas con búsqueda sin tildes, filtros (categoría, talle, color) y orden, todo en la URL | Público |
+| `/productos/:codigo` | Detalle: color, talle, cantidad, stock, relacionados, consulta por WhatsApp | Público |
+| `/carrito` | Carrito completo; valida precio y stock contra la API (RN-05, RN-01) | Público |
+| `/checkout` | Retiro o envío, zona con costo cotizado, envío gratis (RN-04), método de pago | Cliente |
+| `/pedidos/:id` | Confirmación y seguimiento (se actualiza cada 20 s); cancelar solo en Pendiente (RN-03) | Cliente o admin |
+| `/mis-pedidos` | Historial, estado y "pedir de nuevo" | Cliente |
+| `/mi-cuenta` | Editar datos personales | Cliente |
+| `/ingresar` · `/registrarse` | Inicio de sesión y registro | Público |
+| `/admin/productos` | Tabla con stock rápido, alta, edición, desactivar y baja con confirmación | Admin |
+| `/admin/pedidos` | Pedidos por estado y botones para avanzar el flujo | Admin |
+| `/admin/clientes` · `/admin/reportes` · `/admin/envios` | Clientes, reportes de ventas con gráfico y monto de envío gratis | Admin |
 
-La búsqueda y el filtro por categoría se aplican en el navegador sobre los productos ya obtenidos (la API no ofrece filtros).
-
-## Estructura
+## Estructura de `src/`
 
 ```text
 src/
 ├── components/
-│   ├── forms/        ProductForm (alta y edición con validación)
-│   ├── layout/       MainLayout, SiteHeader, SiteFooter
-│   ├── productos/    ProductCard, ProductTable, ProductFilters, ProductImage, StockBadge
-│   └── ui/           Button, FormField, Feedback (Loading/EmptyState/ErrorMessage),
-│                     ConfirmDialog, ToastRegion, PageHeader, Badge, PhotoPlaceholder, Icons
-├── context/          ToastProvider (notificaciones compartidas)
-├── hooks/            useApiResource, useProductos/useProducto, useToast
-├── pages/            Una pantalla por archivo
-├── services/         apiClient (fetch + manejo de errores) y productoService (endpoints)
-├── styles/           variables.css (paleta, tipografías, espacios) y global.css
-├── utils/            formato de precios, validaciones, datos del local
-├── App.jsx           Rutas
-└── main.jsx          Punto de entrada
+│   ├── admin/       GraficoBarras
+│   ├── carrito/     CartDrawer, LineaCarrito, BarraEnvioGratis
+│   ├── forms/       ProductForm, CuentaForm
+│   ├── layout/      MainLayout, SiteHeader, SiteFooter, AdminLayout, RequireAuth
+│   ├── pedidos/     SeguimientoPedido, DetallePedido, EstadoBadge
+│   ├── productos/   PrendaCard, EtiquetaProducto, SelectorVariante, ProductoArte, ProductTable, ...
+│   └── ui/          Button, FormField, Feedback, ConfirmDialog, ToastRegion, QuantityStepper, Icons, ...
+├── context/         Toast, Auth, Cart y Confirm (un único sistema de avisos y un único diálogo)
+├── hooks/           useApiResource, useProductos, useSumarAlCarrito, useValidacionCarrito, ...
+├── pages/           Una pantalla por archivo (admin/ aparte, cargado bajo demanda)
+├── services/        apiClient (fetch, token y errores) + un servicio por recurso de la API
+├── styles/          variables.css (tokens) y global.css
+├── utils/           prendas (agrupar variantes), format, validation, storage, negocio
+├── App.jsx          Providers y rutas
+└── main.jsx         Punto de entrada y fuentes
 ```
+
+Ningún componente hace `fetch`: todas las peticiones pasan por `src/services/`. Las prendas se dibujan en SVG (`ProductoArte`) porque el local todavía no tiene fotos propias.
 
 ## Diseño
 
-Se respeta el documento **"OCN Diseño Web" (Etapa 2 · UX/UI)**:
+El diseño evoluciona el **boceto de Franco** (`docs/boceto/ocn-diseno-web.pdf`). Es la opción 1 de las tres propuestas en `docs/boceto/propuestas/`:
 
-- Paleta: Charcoal Urbano `#1C1B19` (header y footer), Stone Cálido `#F3EFE7` (secciones) y Naranja Señal `#FF5A1F` (botones clave).
-- Tipografías: Bebas Neue para títulos e Inter para textos.
-- Landing con las 5 secciones del wireframe y los textos relevados en la Ficha Técnica. Las fotos siguen siendo los placeholders rayados del mockup hasta contar con imágenes propias del local.
+- **Paleta:** charcoal `#1C1B19`, stone `#F3EFE7` y naranja `#FF5A1F`.
+- **Tipografías:** Bebas Neue para títulos e Inter para textos, autohospedadas.
+- **Estructura:** las secciones del wireframe.
+- **Lenguaje gráfico:** parches bordados (puntada punteada), etiquetas colgantes y bordes festoneados.
 
-Ajustes de accesibilidad respecto del mockup: el texto de los botones naranjas es charcoal (el blanco sobre naranja tiene contraste 3.1:1, insuficiente para texto normal) y los textos naranjas pequeños usan un tono más oscuro (`#B8400F`).
+Mejoras de accesibilidad respecto del boceto:
 
-## Limitaciones conocidas
+- Los botones naranjas llevan texto charcoal: el contraste del texto blanco era 3.1:1.
+- Los textos naranjas chicos usan `#B8400F`.
 
-- El backend sólo expone el recurso **Producto**. Registro/login, carrito, pedidos y envíos no tienen endpoints todavía, por eso no se implementaron en el frontend.
-- La sección de administración no tiene autenticación porque el backend no la ofrece.
-- El backend guarda los datos en memoria: al reiniciarlo se pierden los productos cargados.
+Verificado con axe-core: 0 violaciones en 15 pantallas, a 390 y 1440 px.
+
+## Datos
+
+Son reales los datos del local: dirección, horario, WhatsApp, Instagram y rating. El catálogo, los precios, las zonas de envío y el monto de envío gratis son de **ejemplo** hasta que el local cargue los reales.

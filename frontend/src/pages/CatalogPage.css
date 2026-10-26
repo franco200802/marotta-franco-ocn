@@ -1,12 +1,13 @@
 .catalog__count {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-5);
   font-size: var(--text-sm);
+  color: var(--color-text-muted);
 }
 
 .catalog__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--space-6) var(--space-5);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -16,7 +17,7 @@
   display: flex;
 }
 
-.catalog__grid .product-card {
+.catalog__grid .prenda-card {
   width: 100%;
 }
 

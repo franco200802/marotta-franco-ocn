@@ -103,3 +103,19 @@
     width: 100%;
   }
 }
+
+.product-form__activo {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-stone);
+  cursor: pointer;
+}
+
+.product-form__activo input {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}

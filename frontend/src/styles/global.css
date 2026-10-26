@@ -156,3 +156,133 @@ textarea {
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------- Superficies del navegador ---------- */
+::selection {
+  background: var(--color-accent);
+  color: var(--color-charcoal);
+}
+
+html {
+  scrollbar-color: var(--color-charcoal) var(--color-stone-dark);
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+input,
+select,
+textarea {
+  caret-color: var(--color-accent-text);
+  accent-color: var(--color-charcoal);
+}
+
+body {
+  overflow-x: clip;
+}
+
+/* El contenido siempre por encima del objeto 3D (el fondo de cada sección queda por debajo). */
+.container {
+  position: relative;
+  z-index: var(--z-contenido);
+}
+
+/* ---------- Mundo "parches y etiquetas" ---------- */
+.parche {
+  border-radius: var(--radio-parche);
+  outline: 2px dashed var(--puntada);
+  outline-offset: var(--puntada-offset);
+  box-shadow: 0 10px 24px rgb(28 27 25 / 0.12);
+}
+
+.parche--oscuro {
+  background: var(--color-charcoal);
+  color: var(--color-stone);
+  outline-color: #4a4741;
+}
+
+.parche--naranja {
+  background: var(--color-accent);
+  color: var(--color-charcoal);
+  outline-color: var(--puntada);
+}
+
+.parche--blanco {
+  background: var(--color-white);
+}
+
+.section--stone {
+  background-color: var(--color-stone);
+}
+
+.section--charcoal {
+  background-color: var(--color-charcoal);
+  color: var(--color-stone);
+  --focus-ring-color: var(--color-accent);
+}
+
+.festoneado {
+  height: var(--festoneado);
+  background:
+    radial-gradient(
+        circle at 50% 0,
+        var(--festoneado-de) calc(var(--festoneado) / 2),
+        transparent calc(var(--festoneado) / 2 + 0.5px)
+      )
+      0 0 / var(--festoneado) var(--festoneado) repeat-x,
+    var(--festoneado-a);
+}
+
+.festoneado--invertido {
+  transform: scaleY(-1);
+}
+
+/* Cinta de frases: corre sola y se frena con reduced motion. */
+.cinta {
+  overflow: hidden;
+  padding-block: var(--space-4);
+  background: var(--color-charcoal);
+  color: var(--color-stone);
+}
+
+.cinta__pista {
+  display: flex;
+  width: max-content;
+  animation: cinta-correr 38s linear infinite;
+}
+
+.cinta__grupo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding-right: var(--space-6);
+  margin: 0;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.cinta__grupo li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.cinta__grupo svg {
+  color: var(--color-accent);
+}
+
+@keyframes cinta-correr {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinta__pista {
+    animation: none;
+  }
+}

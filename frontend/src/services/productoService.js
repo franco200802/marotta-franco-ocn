@@ -1,32 +1,38 @@
-import { apiRequest } from "./apiClient.js";
+import { http } from "./apiClient.js";
 
 /*
- * Endpoints reales del backend (Backend/src/routes/productoRoutes.js):
- *   GET    /api/productos
+ * Endpoints reales del backend (backend/src/routes/productoRoutes.js):
+ *   GET    /api/productos            (público; ?todos=1 incluye desactivados para el admin)
  *   GET    /api/productos/:codigo
- *   POST   /api/productos
- *   PUT    /api/productos/:codigo
- *   DELETE /api/productos/:codigo
+ *   POST   /api/productos            (admin)
+ *   PUT    /api/productos/:codigo    (admin)
+ *   DELETE /api/productos/:codigo    (admin)
+ *   GET    /api/categorias
  */
 const RESOURCE = "/productos";
 
-export async function getProductos({ signal } = {}) {
-  const productos = await apiRequest(RESOURCE, { signal });
+export async function getProductos({ signal, todos = false } = {}) {
+  const productos = await http.get(todos ? `${RESOURCE}?todos=1` : RESOURCE, { signal });
   return Array.isArray(productos) ? productos : [];
 }
 
 export function getProductoByCodigo(codigo, { signal } = {}) {
-  return apiRequest(`${RESOURCE}/${encodeURIComponent(codigo)}`, { signal });
+  return http.get(`${RESOURCE}/${encodeURIComponent(codigo)}`, { signal });
 }
 
 export function createProducto(producto) {
-  return apiRequest(RESOURCE, { method: "POST", body: producto });
+  return http.post(RESOURCE, producto);
 }
 
 export function updateProducto(codigo, cambios) {
-  return apiRequest(`${RESOURCE}/${encodeURIComponent(codigo)}`, { method: "PUT", body: cambios });
+  return http.put(`${RESOURCE}/${encodeURIComponent(codigo)}`, cambios);
 }
 
 export function deleteProducto(codigo) {
-  return apiRequest(`${RESOURCE}/${encodeURIComponent(codigo)}`, { method: "DELETE" });
+  return http.delete(`${RESOURCE}/${encodeURIComponent(codigo)}`);
+}
+
+export async function getCategorias({ signal } = {}) {
+  const categorias = await http.get("/categorias", { signal });
+  return Array.isArray(categorias) ? categorias : [];
 }

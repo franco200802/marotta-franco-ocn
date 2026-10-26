@@ -1,0 +1,31 @@
+.stock-rapido {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.stock-rapido__input {
+  width: 72px;
+  height: 38px;
+  padding: 0 var(--space-2);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  font-variant-numeric: tabular-nums;
+}
+
+.stock-rapido__input[aria-invalid="true"] {
+  border-color: var(--color-danger);
+}
+
+.stock-rapido__guardar {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-charcoal);
+  color: var(--color-stone);
+  cursor: pointer;
+}

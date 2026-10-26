@@ -1,9 +1,24 @@
 .site-footer {
   --focus-ring-color: var(--color-accent);
+  position: relative;
   margin-top: auto;
-  padding-block: var(--space-7);
-  background-color: var(--color-charcoal);
+  padding-top: var(--space-7);
+  overflow: hidden;
   color: var(--color-text-on-dark);
+}
+
+/* El fondo va por debajo del objeto 3D y el contenido por encima (regla de capas). */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--color-charcoal);
+}
+
+.site-footer > * {
+  position: relative;
+  z-index: var(--z-contenido);
 }
 
 .site-footer__inner {
@@ -15,7 +30,7 @@
 }
 
 .site-footer__title {
-  font-size: 1.625rem;
+  font-size: 1.75rem;
 }
 
 .site-footer__address {
@@ -23,6 +38,25 @@
   font-style: normal;
   font-size: var(--text-sm);
   color: var(--color-text-on-dark-muted);
+}
+
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.site-footer a {
+  color: var(--color-text-on-dark-muted);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--color-white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .site-footer__contact {
@@ -40,13 +74,17 @@
 .site-footer__contact a {
   display: inline-block;
   padding-block: 2px;
-  color: var(--color-text-on-dark-muted);
-  text-decoration: none;
 }
 
-.site-footer__contact a:hover {
-  color: var(--color-white);
-  text-decoration: underline;
+.site-footer__gigante {
+  margin: var(--space-6) 0 -0.18em;
+  font-family: var(--font-display);
+  font-size: clamp(9rem, 30vw, 26rem);
+  line-height: 0.8;
+  text-align: center;
+  color: transparent;
+  -webkit-text-stroke: 2px #4a4741;
+  user-select: none;
 }
 
 @media (max-width: 640px) {

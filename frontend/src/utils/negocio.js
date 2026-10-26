@@ -11,7 +11,9 @@ export const NEGOCIO = {
   whatsapp: "011 6106-6755",
   instagram: "@ocn.villaurquiza",
   instagramUrl: "https://www.instagram.com/ocn.villaurquiza/",
-  rating: "4.6 en Google · 24 opiniones",
+  rating: "4.6 en Google, con 24 opiniones",
+  mapaUrl: "https://www.google.com/maps/search/?api=1&query=Bauness+2395,+C1431+CABA",
+  mapaEmbed: "https://www.google.com/maps?q=Bauness+2395,+C1431+Villa+Urquiza,+CABA&output=embed",
 };
 
 export function whatsappUrl(mensaje) {

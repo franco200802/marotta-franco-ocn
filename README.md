@@ -84,6 +84,15 @@ Tests (`node:test` + `supertest`): `cd backend && npm test`.
 
 Ver `backend/.env.example`. En desarrollo no hace falta crear un `.env`: el administrador inicial es `admin@ocn.local` con la clave `ocn-admin-dev`. En producción, `JWT_SECRET` y `ADMIN_PASSWORD` son obligatorias. El `.env` nunca se versiona.
 
+## Frontend (Entrega 3)
+
+React + Vite en `frontend/`, conectado a la API. El detalle está en `frontend/README.md`:
+
+- **Tienda:** catálogo con filtros, detalle con talle y color, carrito, checkout con envío por zona, seguimiento de pedidos y cuenta.
+- **Panel de administración:** productos, pedidos, clientes, reportes y envíos.
+
+El diseño evoluciona el boceto original (`docs/boceto/`).
+
 ## Cómo ejecutar
 
 Se necesitan dos terminales:

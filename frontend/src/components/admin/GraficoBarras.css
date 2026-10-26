@@ -1,0 +1,108 @@
+.grafico {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.grafico__titulo {
+  font-weight: 700;
+}
+
+.grafico__lienzo {
+  position: relative;
+}
+
+.grafico svg {
+  display: block;
+  width: 100%;
+  height: 220px;
+  overflow: visible;
+}
+
+.grafico__grilla {
+  stroke: var(--color-stone-dark);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.grafico__base {
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.grafico__zona {
+  fill: transparent;
+}
+
+.grafico__marca {
+  fill: var(--color-accent);
+  transition: fill var(--transition-fast);
+}
+
+.grafico__barra {
+  outline: none;
+  cursor: default;
+}
+
+.grafico__barra.is-activa .grafico__zona {
+  fill: rgb(28 27 25 / 0.05);
+}
+
+.grafico__barra.is-activa .grafico__marca {
+  fill: var(--color-charcoal);
+}
+
+.grafico__barra:focus-visible .grafico__zona {
+  stroke: var(--focus-ring-color);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.grafico__eje {
+  fill: var(--color-text-muted);
+  font-size: 11px;
+  font-family: var(--font-body);
+}
+
+.grafico__tooltip {
+  position: absolute;
+  top: -8px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-charcoal);
+  color: var(--color-stone);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+}
+
+.grafico__tabla summary {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.grafico__tabla table {
+  width: 100%;
+  margin-top: var(--space-2);
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.grafico__tabla th,
+.grafico__tabla td {
+  padding: var(--space-1) var(--space-2);
+  border-bottom: 1px solid var(--color-stone-dark);
+  text-align: left;
+}
+
+.grafico__tabla .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

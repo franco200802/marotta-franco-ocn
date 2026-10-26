@@ -7,7 +7,7 @@ import { CATEGORIAS_SUGERIDAS } from "../../utils/negocio.js";
 import { LIMITES, PRODUCTO_VACIO, toProductoPayload, validateProducto } from "../../utils/productoForm.js";
 import "./ProductForm.css";
 
-const ORDEN_CAMPOS = Object.keys(PRODUCTO_VACIO);
+const ORDEN_CAMPOS = Object.keys(PRODUCTO_VACIO).filter((campo) => campo !== "activo");
 
 /**
  * Formulario de alta y edición de productos.
@@ -106,7 +106,13 @@ export default function ProductForm({ initialValues = PRODUCTO_VACIO, submitLabe
           >
             {(field) => (
               <>
-                <input type="text" list="categorias-sugeridas" maxLength={LIMITES.categoria} autoComplete="off" {...fieldProps(field)} />
+                <input
+                  type="text"
+                  list="categorias-sugeridas"
+                  maxLength={LIMITES.categoria}
+                  autoComplete="off"
+                  {...fieldProps(field)}
+                />
                 <datalist id="categorias-sugeridas">
                   {CATEGORIAS_SUGERIDAS.map((categoria) => (
                     <option key={categoria} value={categoria} />
@@ -172,6 +178,20 @@ export default function ProductForm({ initialValues = PRODUCTO_VACIO, submitLabe
           </figure>
         </div>
       </fieldset>
+
+      <label className="product-form__activo">
+        <input
+          type="checkbox"
+          name="activo"
+          checked={values.activo !== false}
+          disabled={isSubmitting}
+          onChange={(event) => setValues((actuales) => ({ ...actuales, activo: event.target.checked }))}
+        />
+        <span>
+          <strong>Producto activo</strong>
+          <span className="text-muted"> Si lo desactivás, deja de verse en el catálogo pero no se borra.</span>
+        </span>
+      </label>
 
       <div className="product-form__actions">
         <Button variant="ghost" onClick={onCancel} disabled={isSubmitting}>

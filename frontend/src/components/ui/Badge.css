@@ -24,3 +24,8 @@
   background-color: var(--color-danger-bg);
   color: var(--color-danger);
 }
+
+.badge--warning {
+  background-color: #fff1e6;
+  color: var(--color-accent-text);
+}

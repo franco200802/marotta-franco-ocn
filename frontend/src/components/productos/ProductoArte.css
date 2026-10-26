@@ -1,0 +1,44 @@
+.producto-arte {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.arte__figura > path,
+.arte__figura > rect,
+.arte__figura > g > rect {
+  fill: var(--arte-tinte);
+  stroke: var(--arte-tinta);
+  stroke-width: 4;
+  stroke-linejoin: round;
+  transition: fill 400ms var(--ease-out);
+}
+
+.arte__figura .arte__relleno-claro {
+  fill: color-mix(in srgb, var(--arte-tinte) 70%, white);
+}
+
+.arte__figura .arte__puntada {
+  fill: none;
+  stroke: rgb(28 27 25 / 0.55);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 5;
+  stroke-linecap: round;
+}
+
+.producto-arte--oscuro .arte__puntada {
+  stroke: rgb(243 239 231 / 0.6);
+}
+
+.arte__boton,
+.arte__rueda {
+  fill: var(--color-stone);
+  stroke: var(--arte-tinta);
+  stroke-width: 3;
+}
+
+.arte__hebilla {
+  fill: none !important;
+  stroke: #b9b2a6 !important;
+  stroke-width: 7 !important;
+}
