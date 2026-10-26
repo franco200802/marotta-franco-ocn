@@ -105,7 +105,9 @@ export async function apiRequest(path, { method = "GET", body, signal } = {}) {
   const payload = await readBody(response);
 
   if (!response.ok || payload?.success === false) {
-    if (response.status === 401 && token) {
+    // Solo la primera respuesta 401 con ese token cierra la sesión (evita avisos repetidos).
+    if (response.status === 401 && token && sesion.obtenerToken() === token) {
+      sesion.borrarToken();
       alExpirarSesion();
     }
     throw new ApiError(buildErrorMessage(response.status, payload), response.status);

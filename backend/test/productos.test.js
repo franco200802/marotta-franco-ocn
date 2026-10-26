@@ -22,6 +22,12 @@ describe("CRUD de Productos", () => {
     assert.ok(respuesta.body.data.length > 0);
   });
 
+  it("el catálogo público funciona aunque llegue un token vencido o inválido", async () => {
+    const respuesta = await api.get("/api/productos").set(conToken("token-viejo"));
+    assert.equal(respuesta.status, 200);
+    assert.ok(respuesta.body.data.length > 0);
+  });
+
   it("obtiene un producto por código y responde 404 si no existe", async () => {
     const existente = await api.get("/api/productos/1");
     assert.equal(existente.status, 200);

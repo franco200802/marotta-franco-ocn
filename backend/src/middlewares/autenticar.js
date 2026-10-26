@@ -26,14 +26,14 @@ export function autenticar(req, res, next) {
   }
 }
 
-/** Si viene un token válido lo usa; si no viene, sigue como visitante. */
+/** Si viene un token válido lo usa; si no viene o venció, sigue como visitante (rutas públicas). */
 export function autenticarOpcional(req, res, next) {
   try {
     req.usuario = leerUsuario(req);
-    next();
-  } catch (error) {
-    next(error);
+  } catch {
+    req.usuario = null;
   }
+  next();
 }
 
 /** Debe ir después de autenticar: permite el paso solo a los roles indicados. */
