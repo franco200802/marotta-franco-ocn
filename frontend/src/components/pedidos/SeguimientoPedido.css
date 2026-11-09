@@ -64,6 +64,8 @@
 }
 
 .seguimiento--cancelado {
+  /* Es un mensaje, no la grilla de 5 pasos: ocupa todo el ancho. */
+  display: block;
   padding: var(--space-4);
   border-radius: var(--radius-md);
   background: var(--color-danger-bg);
