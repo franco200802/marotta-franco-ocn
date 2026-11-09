@@ -50,6 +50,7 @@ La API tiene CORS habilitado para `localhost:5173` y `4173`, así que también s
 
 ```text
 src/
+├── assets/          favicon y recursos visuales (SVG)
 ├── components/
 │   ├── admin/       GraficoBarras
 │   ├── carrito/     CartDrawer, LineaCarrito, BarraEnvioGratis
