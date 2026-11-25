@@ -28,12 +28,18 @@ export default function AuthProvider({ children }) {
     const controller = new AbortController();
     obtenerPerfil({ signal: controller.signal })
       .then(setUsuario)
-      .catch(() => {})
+      .catch((error) => {
+        // El administrador desactivó la cuenta: se cierra la sesión y se explica por qué.
+        if (error.status === 403) {
+          sesion.borrarToken();
+          toast.showToast({ type: "error", title: "Cuenta desactivada", message: error.message });
+        }
+      })
       .finally(() => {
         if (!controller.signal.aborted) setCargando(false);
       });
     return () => controller.abort();
-  }, []);
+  }, [toast]);
 
   const abrirSesion = useCallback(({ token, usuario: datos }) => {
     sesion.guardarToken(token);

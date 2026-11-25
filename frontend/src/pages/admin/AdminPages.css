@@ -27,6 +27,12 @@
 
 /* ---------- Tablas del panel ---------- */
 .tabla-admin__wrapper {
+  /*
+   * En pantallas angostas la tabla se desplaza dentro de su caja, sin ensanchar la página.
+   * position: relative hace que los textos ocultos para lectores de pantalla (position: absolute)
+   * también queden dentro de la caja.
+   */
+  position: relative;
   overflow-x: auto;
   border-radius: var(--radius-md);
   background: var(--color-surface);

@@ -41,7 +41,7 @@ function useCotizacion({ tipoEntrega, zonaId, subtotal }) {
 }
 
 export default function CheckoutPage() {
-  const { items, subtotal, vaciar, sincronizar } = useCart();
+  const { items, subtotal, enServidor, cargando, despuesDeComprar, revisar, sincronizar } = useCart();
   const { usuario } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
@@ -83,26 +83,39 @@ export default function CheckoutPage() {
     setErrorEnvio("");
     try {
       const pedido = await crearPedido({
-        items: items.map(({ productoId, cantidad }) => ({ productoId, cantidad })),
+        // Con sesión de cliente el backend compra el carrito que tiene guardado.
+        items: enServidor ? undefined : items.map(({ productoId, cantidad }) => ({ productoId, cantidad })),
         tipoEntrega: valores.tipoEntrega,
         zonaId: valores.tipoEntrega === "domicilio" ? Number(valores.zonaId) : undefined,
         direccion: valores.tipoEntrega === "domicilio" ? valores.direccion : undefined,
         metodoPago: valores.metodoPago,
       });
-      vaciar();
-      toast.success(`Tu pedido #${pedido.id} quedó registrado.`, "¡Pedido confirmado!");
       navigate(`/pedidos/${pedido.id}`, { replace: true });
+      despuesDeComprar();
+      toast.success(`Tu pedido #${pedido.id} quedó registrado.`, "¡Pedido confirmado!");
     } catch (fallo) {
       setErrorEnvio(fallo.message);
       setEnviando(false);
       // Si el problema fue de stock o disponibilidad, se actualiza el carrito con lo que hay hoy.
-      if (fallo.isConflict) {
+      if (fallo.isConflict && enServidor) {
+        revisar();
+      } else if (fallo.isConflict) {
         validarCarrito(items.map(({ productoId, cantidad }) => ({ productoId, cantidad })))
           .then((resultado) => sincronizar(resultado.items))
           .catch(() => {});
       }
       requestAnimationFrame(() => errorRef.current?.focus());
     }
+  }
+
+  if (cargando) {
+    return (
+      <div className="section section--stone">
+        <div className="container">
+          <Loading message="Cargando tu carrito…" />
+        </div>
+      </div>
+    );
   }
 
   if (items.length === 0) {

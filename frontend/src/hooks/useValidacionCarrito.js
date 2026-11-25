@@ -3,15 +3,24 @@ import { useCart } from "./useCart.js";
 import { validarCarrito } from "../services/carritoService.js";
 import { formatPrecio } from "../utils/format.js";
 
-/** Revisa el carrito contra el servidor una vez por visita: precio vigente (RN-05) y stock (RN-01). */
+/**
+ * Revisa el carrito contra el servidor una vez por visita: precio vigente (RN-05) y stock (RN-01).
+ * Con sesión de cliente el carrito ya está en el servidor: se vuelve a leer y el backend informa qué cambió.
+ */
 export function useValidacionCarrito() {
-  const { items, sincronizar } = useCart();
-  const [avisos, setAvisos] = useState([]);
+  const { items, sincronizar, enServidor, cargando, avisosServidor, revisar } = useCart();
+  const [avisosLocales, setAvisosLocales] = useState([]);
   const yaValidado = useRef(false);
 
   useEffect(() => {
-    if (yaValidado.current || items.length === 0) return undefined;
+    if (yaValidado.current || cargando || items.length === 0) return undefined;
     yaValidado.current = true;
+
+    if (enServidor) {
+      revisar();
+      return undefined;
+    }
+
     const controller = new AbortController();
     validarCarrito(
       items.map(({ productoId, cantidad, precio }) => ({ productoId, cantidad, precio })),
@@ -29,11 +38,11 @@ export function useValidacionCarrito() {
             nuevos.push(`De ${item.nombre} quedan ${linea.stock}: ajustamos la cantidad.`);
         });
         sincronizar(resultado.items);
-        setAvisos(nuevos);
+        setAvisosLocales(nuevos);
       })
       .catch(() => {});
     return () => controller.abort();
-  }, [items, sincronizar]);
+  }, [items, sincronizar, enServidor, cargando, revisar]);
 
-  return avisos;
+  return enServidor ? avisosServidor : avisosLocales;
 }

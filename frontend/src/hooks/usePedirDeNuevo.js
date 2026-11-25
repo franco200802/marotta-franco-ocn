@@ -5,7 +5,7 @@ import { getProductos } from "../services/productoService.js";
 
 /** Vuelve a sumar al carrito lo de un pedido anterior, con los precios y el stock de hoy. */
 export function usePedirDeNuevo() {
-  const { agregar, abrirCajon } = useCart();
+  const { agregar, abrirCajon, items } = useCart();
   const toast = useToast();
 
   return useCallback(
@@ -14,15 +14,17 @@ export function usePedirDeNuevo() {
         const productos = await getProductos();
         let sumados = 0;
         let faltantes = 0;
-        pedido.detalles.forEach((detalle) => {
+        // Una por una: con sesión, cada prenda se guarda en el carrito del servidor.
+        for (const detalle of pedido.detalles) {
           const producto = productos.find((p) => p.codigo === detalle.productoId);
-          if (producto && producto.stock > 0) {
-            agregar(producto, Math.min(detalle.cantidad, producto.stock));
+          const enCarrito = items.find((item) => item.productoId === detalle.productoId)?.cantidad ?? 0;
+          const cantidad = producto ? Math.min(detalle.cantidad, producto.stock - enCarrito) : 0;
+          if (cantidad > 0 && (await agregar(producto, cantidad))) {
             sumados += 1;
           } else {
             faltantes += 1;
           }
-        });
+        }
         if (sumados === 0) {
           toast.error("Ninguna de esas prendas tiene stock hoy.", "No pudimos repetir el pedido");
           return;
@@ -38,6 +40,6 @@ export function usePedirDeNuevo() {
         toast.error(error.message, "No pudimos repetir el pedido");
       }
     },
-    [agregar, abrirCajon, toast],
+    [agregar, abrirCajon, items, toast],
   );
 }
