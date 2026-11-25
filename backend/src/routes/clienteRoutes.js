@@ -8,5 +8,6 @@ const router = Router();
 router.use(autenticar);
 router.get("/", autorizar(Roles.ADMIN), clienteController.listar);
 router.put("/perfil", autorizar(Roles.CLIENTE), clienteController.actualizarPerfil);
+router.patch("/:id/estado", autorizar(Roles.ADMIN), clienteController.cambiarEstado);
 
 export default router;

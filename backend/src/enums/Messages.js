@@ -27,11 +27,15 @@ export const Messages = Object.freeze({
   TOKEN_INVALIDO: "Tu sesión venció o no es válida. Iniciá sesión de nuevo.",
   ACCESO_DENEGADO: "No tenés permiso para hacer esto.",
   CLIENTE_NOT_FOUND: "El cliente no existe.",
+  CUENTA_DESACTIVADA: "Tu cuenta está desactivada. Escribinos al local para reactivarla.",
+  ESTADO_CLIENTE_INVALIDO: "Indicá si la cuenta queda activa (true) o desactivada (false).",
 
   // Carrito y pedidos
   CARRITO_VACIO: "El carrito está vacío.",
   CANTIDAD_INVALIDA: "La cantidad debe ser un número entero mayor que cero.",
   STOCK_INSUFICIENTE: "No hay stock suficiente de uno de los productos.",
+  STOCK_CARRITO_SUPERADO: "No hay más stock de esa prenda: ya tenés en el carrito todas las unidades disponibles.",
+  ITEM_CARRITO_NOT_FOUND: "Esa prenda no está en tu carrito.",
   PEDIDO_NOT_FOUND: "El pedido no existe.",
   ESTADO_INVALIDO: "El estado indicado no existe.",
   TRANSICION_INVALIDA: "El pedido no puede pasar a ese estado.",

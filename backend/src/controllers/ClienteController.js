@@ -18,6 +18,14 @@ class ClienteController {
       next(error);
     }
   }
+
+  cambiarEstado(req, res, next) {
+    try {
+      return ApiResponse.success(res, clienteService.cambiarEstado(req.params.id, req.body?.activo));
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new ClienteController();

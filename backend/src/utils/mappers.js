@@ -7,8 +7,13 @@ export const toClientePublico = (cliente) => ({
   apellido: cliente.apellido,
   email: cliente.email,
   direccion: cliente.direccion,
+  activo: cliente.activo,
   rol: Roles.CLIENTE,
 });
+
+/** "Remera oversize · M, Negro": nombre de una variante para el carrito y el detalle del pedido. */
+export const nombreDeVariante = (producto) =>
+  [producto.nombre, [producto.talle, producto.color].filter(Boolean).join(", ")].filter(Boolean).join(" · ");
 
 export const toAdministradorPublico = (administrador) => ({
   id: administrador.id,

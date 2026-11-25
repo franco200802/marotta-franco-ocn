@@ -9,6 +9,7 @@ import AdministradorRepository from "./AdministradorRepository.js";
 import PedidoRepository from "./PedidoRepository.js";
 import DetallePedidoRepository from "./DetallePedidoRepository.js";
 import EnvioRepository from "./EnvioRepository.js";
+import ItemCarritoRepository from "./ItemCarritoRepository.js";
 import ZonaEnvioRepository from "./ZonaEnvioRepository.js";
 import ConfiguracionRepository from "./ConfiguracionRepository.js";
 import LocalRepository from "./LocalRepository.js";
@@ -72,6 +73,7 @@ export function cargarDatosIniciales() {
     PedidoRepository,
     DetallePedidoRepository,
     EnvioRepository,
+    ItemCarritoRepository,
     ZonaEnvioRepository,
   ].forEach((repositorio) => repositorio.clear());
 

@@ -1,7 +1,7 @@
 import Cliente from "../models/Cliente.js";
 import clienteRepository from "../repositories/ClienteRepository.js";
 import administradorRepository from "../repositories/AdministradorRepository.js";
-import { BadRequestError, ConflictError, UnauthorizedError } from "../exceptions/AppError.js";
+import { BadRequestError, ConflictError, ForbiddenError, UnauthorizedError } from "../exceptions/AppError.js";
 import { Messages } from "../enums/Messages.js";
 import { Roles } from "../enums/Roles.js";
 import { compararPassword, hashearPassword } from "../utils/password.js";
@@ -57,6 +57,9 @@ class AuthService {
 
     const cliente = clienteRepository.findByEmail(emailNormalizado);
     if (cliente && (await compararPassword(password, cliente.password))) {
+      if (!cliente.activo) {
+        throw new ForbiddenError(Messages.CUENTA_DESACTIVADA);
+      }
       return { token: firmarToken(cliente, Roles.CLIENTE), usuario: toClientePublico(cliente) };
     }
 

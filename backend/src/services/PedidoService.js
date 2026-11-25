@@ -7,6 +7,8 @@ import envioRepository from "../repositories/EnvioRepository.js";
 import productoRepository from "../repositories/ProductoRepository.js";
 import clienteRepository from "../repositories/ClienteRepository.js";
 import envioService from "./EnvioService.js";
+import carritoService from "./CarritoService.js";
+import clienteService from "./ClienteService.js";
 import { BadRequestError, ConflictError, NotFoundError } from "../exceptions/AppError.js";
 import { Messages } from "../enums/Messages.js";
 import { Roles } from "../enums/Roles.js";
@@ -14,13 +16,17 @@ import { EstadoPedido, TransicionesPedido } from "../enums/EstadoPedido.js";
 import { TipoEntrega } from "../enums/TipoEntrega.js";
 import { MetodoPago } from "../enums/MetodoPago.js";
 import { isNonEmptyString, isOneOf, isPositiveInteger, parseId } from "../utils/validators.js";
-
-const nombreDeVariante = (producto) =>
-  [producto.nombre, [producto.talle, producto.color].filter(Boolean).join(", ")].filter(Boolean).join(" · ");
+import { nombreDeVariante } from "../utils/mappers.js";
 
 class PedidoService {
+  /**
+   * Confirma la compra. Si no se envían `items`, se compra lo que el cliente tiene en su carrito
+   * guardado en el servidor (así lo hace el frontend desde la Entrega 4).
+   */
   crear(clienteId, datos) {
-    const { items, tipoEntrega, zonaId, direccion, metodoPago } = datos ?? {};
+    clienteService.exigirActivo(clienteId);
+    const { tipoEntrega, zonaId, direccion, metodoPago } = datos ?? {};
+    const items = datos?.items === undefined ? carritoService.itemsParaPedido(clienteId) : datos.items;
 
     if (!Array.isArray(items) || items.length === 0) {
       throw new BadRequestError(Messages.CARRITO_VACIO);
@@ -86,6 +92,12 @@ class PedidoService {
         cotizacion.costo,
         tipoEntrega === TipoEntrega.DOMICILIO ? direccion.trim() : null,
       ),
+    );
+
+    // El carrito conserva los productos hasta finalizar la compra: lo comprado sale del carrito.
+    carritoService.quitarComprados(
+      clienteId,
+      lineas.map(({ producto }) => producto.codigo),
     );
 
     return this.#completo(pedido);
