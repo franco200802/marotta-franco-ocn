@@ -26,6 +26,7 @@ marotta-franco-ocn/
 1. **Modelo del dominio:** estructura del repositorio, diagrama de clases y modelos en `backend/src/models/`.
 2. **API MVC:** controllers, services, repositories, routes, middlewares, responses, exceptions, enums y utils; CRUD en memoria y manejo centralizado de errores.
 3. **Frontend React:** interfaz conectada a la API, con componentes reutilizables, notificaciones, validaciones y accesibilidad.
+4. **Integración completa:** carrito de cada cliente guardado en el servidor y gestión de cuentas por el administrador; recorrido de punta a punta verificado. Detalle en [`docs/entrega-4.md`](docs/entrega-4.md) y guion del video en [`docs/guion-video-entrega-4.md`](docs/guion-video-entrega-4.md).
 
 ## Datos reales y datos de ejemplo
 
@@ -67,18 +68,22 @@ Todas las respuestas tienen el mismo formato: `{ "success": true, "data": ... }`
 | `GET /api/categorias` | Público | Categorías derivadas de los productos |
 | `POST /api/auth/registro` · `POST /api/auth/login` | Público | Registro de clientes e inicio de sesión (JWT) |
 | `GET /api/auth/perfil` · `PUT /api/clientes/perfil` | Cliente | Ver y editar los datos propios |
-| `GET /api/clientes` | Admin | Clientes con su resumen de compras |
-| `POST /api/carrito/validar` | Público | Precio vigente y stock de cada línea del carrito (RN-05, RN-01) |
+| `GET /api/clientes` | Admin | Clientes con su resumen de compras y estado de la cuenta |
+| `PATCH /api/clientes/:id/estado` | Admin | Desactivar o reactivar una cuenta (Entrega 4) |
+| `POST /api/carrito/validar` | Público | Precio vigente y stock de cada línea del carrito del visitante (RN-05, RN-01) |
+| `GET /api/carrito` · `DELETE /api/carrito` | Cliente | Ver o vaciar el carrito guardado en el servidor (Entrega 4) |
+| `POST /api/carrito/items` · `PUT` / `DELETE /api/carrito/items/:productoId` | Cliente | Agregar, cambiar la cantidad o quitar una prenda (Entrega 4) |
+| `POST /api/carrito/fusionar` | Cliente | Sumar el carrito del visitante al iniciar sesión (Entrega 4) |
 | `GET /api/envios/zonas` · `POST /api/envios/cotizar` | Público | Zonas, costo de envío y envío gratis (RN-04) |
 | `PUT /api/envios/configuracion` | Admin | Monto mínimo para envío gratis |
-| `POST /api/pedidos` · `GET /api/pedidos/mios` | Cliente | Comprar y ver el historial propio |
+| `POST /api/pedidos` · `GET /api/pedidos/mios` | Cliente | Comprar (sin `items`, compra el carrito guardado) y ver el historial propio |
 | `PATCH /api/pedidos/:id/cancelar` | Cliente | Cancelar, solo en estado Pendiente (RN-03) |
 | `GET /api/pedidos/:id` | Cliente o admin | Detalle del pedido |
 | `GET /api/pedidos?estado=` · `PATCH /api/pedidos/:id/estado` | Admin | Ver todos los pedidos y avanzar estados |
 | `GET /api/reportes/ventas?desde=&hasta=` | Admin | Ventas por período, producto, estado y día |
 | `GET /api/local` | Público | Datos del local |
 
-Tests (`node:test` + `supertest`): `cd backend && npm test`.
+Tests (`node:test` + `supertest`): `cd backend && npm test` (43 tests).
 
 ### Variables de entorno
 
